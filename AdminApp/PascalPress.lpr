@@ -10,7 +10,7 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, ExplorerWindow
+  Forms, runtimetypeinfocontrols, ExplorerWindow, models, DBLoginWindow
   { you can add units after this };
 
 {$R *.res}
@@ -24,6 +24,8 @@ begin
   {$POP}
   Application.Initialize;
   Application.CreateForm(TExplorerForm, ExplorerForm);
+  Application.CreateForm(TDBModel, DBModel);
+  Application.CreateForm(TDBLoginForm, DBLoginForm);
   Application.Run;
 end.
 

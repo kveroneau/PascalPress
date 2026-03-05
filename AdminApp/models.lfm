@@ -1,0 +1,48 @@
+object DBModel: TDBModel
+  OldCreateOrder = False
+  Height = 196
+  HorizontalOffset = 288
+  VerticalOffset = 145
+  Width = 261
+  object DBConnection: TPQConnection
+    Connected = False
+    LoginPrompt = False
+    DatabaseName = 'pascalpress'
+    KeepConnection = False
+    Transaction = Transaction
+    UserName = 'postgres'
+    HostName = 'srv02'
+    Left = 32
+    Top = 16
+  end
+  object Transaction: TSQLTransaction
+    Active = False
+    Database = DBConnection
+    Left = 168
+    Top = 16
+  end
+  object BlogFS: TSQLQuery
+    FieldDefs = <>
+    Database = DBConnection
+    Transaction = Transaction
+    SQL.Strings = (
+      'SELECT * FROM public.blogfs;'
+    )
+    Params = <>
+    Macros = <>
+    Left = 32
+    Top = 80
+  end
+  object ContentDB: TSQLQuery
+    FieldDefs = <>
+    Database = DBConnection
+    Transaction = Transaction
+    SQL.Strings = (
+      'SELECT * FROM public.content;'
+    )
+    Params = <>
+    Macros = <>
+    Left = 168
+    Top = 80
+  end
+end

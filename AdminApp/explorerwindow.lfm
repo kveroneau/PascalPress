@@ -9,6 +9,7 @@ object ExplorerForm: TExplorerForm
   Menu = MenuBar
   LCLVersion = '4.0.0.4'
   OnResize = FormResize
+  OnShow = FormShow
   object StatusBar: TStatusBar
     Left = 0
     Height = 21

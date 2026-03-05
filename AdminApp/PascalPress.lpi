@@ -106,6 +106,12 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+      </Item>
+      <Item>
+        <PackageName Value="SQLDBLaz"/>
+      </Item>
+      <Item>
         <PackageName Value="LCL"/>
       </Item>
     </RequiredPackages>
@@ -118,8 +124,22 @@
         <Filename Value="explorerwindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="ExplorerForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ExplorerWindow"/>
+      </Unit>
+      <Unit>
+        <Filename Value="models.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DBModel"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit>
+      <Unit>
+        <Filename Value="dbloginwindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="DBLoginForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="DBLoginWindow"/>
       </Unit>
     </Units>
   </ProjectOptions>
