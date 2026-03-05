@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
   ActnList, StdActns, ExtCtrls, PairSplitter, DBLoginWindow, models, DateUtils,
-  PropertyDialog, TextEditWindow, Variants;
+  PropertyDialog, TextEditWindow, Variants, DB;
 
 type
 
@@ -56,6 +56,7 @@ type
     procedure RenderDetails(aDir: string);
     procedure NewFile(aPrompt: string; typ: integer);
     procedure OpenTextContent(objid: Variant);
+    procedure DeleteTextContent(oid: Integer);
   public
 
   end;
@@ -107,11 +108,22 @@ begin
 end;
 
 procedure TExplorerForm.FileDeleteExecute(Sender: TObject);
+var
+  oid: Integer;
 begin
   if not DBModel.BlogFS.Locate('title', IconView.Selected.Caption, []) then
   begin
     ShowMessage('Hmm, odd.');
     Exit;
+  end;
+  if not VarIsNull(DBModel.BlogFS.FieldValues['objectid']) then
+  begin
+    oid:=DBModel.BlogFS.FieldValues['objectid'];
+    case DBModel.BlogFS.FieldByName('type').AsInteger of
+      0: DeleteTextContent(oid);
+      1: ShowMessage('Folder Content will still exist.');
+      2: DeleteTextContent(oid);
+    end;
   end;
   DBModel.BlogFS.Delete;
   RenderDetails(FCurLocation);
@@ -313,6 +325,21 @@ begin
     end
     else
       Cancel;
+    Active:=False;
+    ServerFiltered:=False;
+  end;
+end;
+
+procedure TExplorerForm.DeleteTextContent(oid: Integer);
+begin
+  with DBModel.ContentDB do
+  begin
+    ServerFilter:='ID='+IntToStr(oid);
+    ServerFiltered:=True;
+    Active:=True;
+    FieldByName('id').ProviderFlags:=[pfInKey];
+    Delete;
+    ApplyUpdates;
     Active:=False;
     ServerFiltered:=False;
   end;

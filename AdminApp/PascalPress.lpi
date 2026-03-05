@@ -150,6 +150,7 @@
         <Filename Value="propertydialog.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="PropertyForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="PropertyDialog"/>
       </Unit>
@@ -157,6 +158,7 @@
         <Filename Value="texteditwindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="TextEditorForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="TextEditWindow"/>
       </Unit>
