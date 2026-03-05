@@ -8,6 +8,7 @@ CREATE TABLE public.blogfs
     modified timestamp with time zone,
     published boolean NOT NULL,
     summary text,
+    tag character varying(20),
     objectid integer,
     PRIMARY KEY (id)
 );
