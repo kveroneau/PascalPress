@@ -1,0 +1,143 @@
+object ExplorerForm: TExplorerForm
+  Left = 326
+  Height = 411
+  Top = 311
+  Width = 760
+  Caption = 'PascalPress Explorer'
+  ClientHeight = 411
+  ClientWidth = 760
+  Menu = MenuBar
+  LCLVersion = '4.0.0.4'
+  OnResize = FormResize
+  object StatusBar: TStatusBar
+    Left = 0
+    Height = 21
+    Top = 390
+    Width = 760
+    Panels = <>
+  end
+  object Splitter: TPairSplitter
+    Left = 0
+    Height = 329
+    Top = 0
+    Width = 504
+    Position = 200
+    object TreePane: TPairSplitterSide
+      Cursor = crArrow
+      Left = 0
+      Height = 329
+      Top = 0
+      Width = 200
+      ClientWidth = 200
+      ClientHeight = 329
+      OnResize = TreePaneResize
+      object VFSTree: TTreeView
+        Left = 0
+        Height = 328
+        Top = 0
+        Width = 200
+        Images = Icons
+        ImagesWidth = 16
+        ReadOnly = True
+        RightClickSelect = True
+        ScrollBars = ssAutoBoth
+        StateImages = Icons
+        StateImagesWidth = 16
+        TabOrder = 0
+        Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+      end
+    end
+    object IconPane: TPairSplitterSide
+      Cursor = crArrow
+      Left = 205
+      Height = 329
+      Top = 0
+      Width = 299
+      ClientWidth = 299
+      ClientHeight = 329
+      OnResize = IconPaneResize
+      object IconView: TListView
+        Left = 0
+        Height = 328
+        Top = 0
+        Width = 298
+        Columns = <        
+          item
+            Caption = 'Title'
+          end        
+          item
+            Caption = 'Content Type'
+          end        
+          item
+            Caption = 'Added'
+            Width = 176
+          end>
+        ReadOnly = True
+        SmallImages = Icons
+        SmallImagesWidth = 16
+        TabOrder = 0
+        ViewStyle = vsReport
+      end
+    end
+  end
+  object MenuBar: TMainMenu
+    Left = 680
+    Top = 48
+    object FileMenu: TMenuItem
+      Caption = '&File'
+      object NewMenu: TMenuItem
+        Caption = '&New...'
+        object TextItem: TMenuItem
+          Caption = '&Text Document'
+        end
+        object DirMenu: TMenuItem
+          Caption = '&Folder'
+        end
+        object HTMLItem: TMenuItem
+          Caption = '&HTML Document'
+        end
+      end
+      object OpenItem: TMenuItem
+        Action = FileOpen
+      end
+      object DeleteItem: TMenuItem
+        Action = FileDelete
+      end
+      object PropItem: TMenuItem
+        Action = FileProperties
+      end
+      object Separator1: TMenuItem
+        Caption = '-'
+      end
+      object ExitItem: TMenuItem
+        Action = FileExit
+      end
+    end
+  end
+  object ActionList: TActionList
+    Left = 680
+    Top = 112
+    object FileOpen: TAction
+      Category = 'File'
+      Caption = '&Open'
+      OnExecute = FileOpenExecute
+    end
+    object FileDelete: TAction
+      Category = 'File'
+      Caption = '&Delete'
+    end
+    object FileProperties: TAction
+      Category = 'File'
+      Caption = '&Properties'
+    end
+    object FileExit: TFileExit
+      Category = 'File'
+      Caption = 'E&xit'
+      Hint = 'Exit'
+    end
+  end
+  object Icons: TImageList
+    Left = 680
+    Top = 176
+  end
+end
