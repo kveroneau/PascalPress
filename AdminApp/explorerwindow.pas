@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, ComCtrls,
-  ActnList, StdActns, ExtCtrls, PairSplitter, DBLoginWindow, models, DateUtils;
+  ActnList, StdActns, ExtCtrls, PairSplitter, DBLoginWindow, models, DateUtils,
+  PropertyDialog, TextEditWindow, Variants;
 
 type
 
@@ -40,6 +41,7 @@ type
     procedure DirMenuClick(Sender: TObject);
     procedure FileDeleteExecute(Sender: TObject);
     procedure FileOpenExecute(Sender: TObject);
+    procedure FilePropertiesExecute(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure HTMLItemClick(Sender: TObject);
@@ -51,9 +53,9 @@ type
   private
     FCurLocation: string;
     function AddDirectory(aParent: TTreeNode; aDir: string): TTreeNode;
-    function GetContentTypeName: string;
     procedure RenderDetails(aDir: string);
     procedure NewFile(aPrompt: string; typ: integer);
+    procedure OpenTextContent(objid: Variant);
   public
 
   end;
@@ -69,7 +71,32 @@ implementation
 
 procedure TExplorerForm.FileOpenExecute(Sender: TObject);
 begin
+  with DBModel.BlogFS do
+  begin
+    if not Locate('title', IconView.Selected.Caption, []) then
+      Exit;
+    case FieldByName('type').AsInteger of
+      0: OpenTextContent(FieldValues['objectid']);
+      1: ShowMessage('Open in Tree View for now.');
+      2: OpenTextContent(FieldValues['objectid']);
+    else
+      StatusBar.SimpleText:='Content Type unsupported.';
+    end;
+  end;
+end;
 
+procedure TExplorerForm.FilePropertiesExecute(Sender: TObject);
+begin
+  with DBModel.BlogFS do
+  begin
+    if not Locate('title', IconView.Selected.Caption, []) then
+      Exit;
+    Edit;
+    if PropertyForm.ShowModal = mrOK then
+      Post
+    else
+      Cancel;
+  end;
 end;
 
 procedure TExplorerForm.DirMenuClick(Sender: TObject);
@@ -203,17 +230,6 @@ begin
   Result:=root;
 end;
 
-function TExplorerForm.GetContentTypeName: string;
-begin
-  case DBModel.BlogFS.FieldByName('type').AsInteger of
-    0: Result:='Text Document';
-    1: Result:='Directory';
-    2: Result:='HTML Document';
-  else
-    Result:='Unknown';
-  end;
-end;
-
 procedure TExplorerForm.RenderDetails(aDir: string);
 var
   itm: TListItem;
@@ -229,7 +245,7 @@ begin
       itm:=IconView.Items.Add;
       itm.ImageIndex:=FieldByName('type').AsInteger;
       itm.Caption:=FieldValues['title'];
-      itm.SubItems.Add(GetContentTypeName);
+      itm.SubItems.Add(DBModel.GetContentTypeName);
       itm.SubItems.Add(FormatDateTime('MM/DD/YYYY', FieldByName('added').AsDateTime));
       Next;
     until EOF;
@@ -252,6 +268,54 @@ begin
   DBModel.CreateFile(fname, location, typ, -1);
   if location = VFSTree.Selected.Text then
     RenderDetails(location);
+end;
+
+procedure TExplorerForm.OpenTextContent(objid: Variant);
+var
+  nid, oid: Integer;
+  title: string;
+begin
+  nid:=-1;
+  with DBModel.ContentDB do
+  begin
+    if not VarIsNull(objid) then
+    begin
+      oid:=objid;
+      ServerFilter:='ID='+IntToStr(oid);
+      ServerFiltered:=Enabled;
+    end;
+    Active:=True;
+    if VarIsNull(objid) then
+      Append
+    else
+      Edit;
+    if TextEditorForm.ShowModal = mrOK then
+    begin
+      title:=FieldValues['title'];
+      Post;
+      ApplyUpdates;
+      Refresh;
+      if not Locate('title', title, []) then
+      begin
+        ShowMessage('Unexpected error that should not happen...');
+        Exit;
+      end;
+      if VarIsNull(objid) then
+        nid:=FieldByName('id').AsInteger;
+      with DBModel.BlogFS do
+      begin
+        Edit;
+        if nid > -1 then
+          FieldValues['objectid']:=nid;
+        FieldValues['modified']:=Now;
+        Post;
+      end;
+    end
+    else
+      Cancel;
+    Active:=False;
+    ServerFiltered:=False;
+  end;
 end;
 
 end.

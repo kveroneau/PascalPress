@@ -25,6 +25,7 @@ type
     procedure CreateBasicFS;
     procedure FilterDir(location: string);
     procedure CommitChanges;
+    function GetContentTypeName: string;
   end;
 
 var
@@ -101,6 +102,17 @@ procedure TDBModel.CommitChanges;
 begin
   BlogFS.ApplyUpdates;
   Transaction.CommitRetaining;
+end;
+
+function TDBModel.GetContentTypeName: string;
+begin
+  case BlogFS.FieldByName('type').AsInteger of
+    0: Result:='Text Document';
+    1: Result:='Directory';
+    2: Result:='HTML Document';
+  else
+    Result:='Unknown';
+  end;
 end;
 
 end.

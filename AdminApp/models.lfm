@@ -38,7 +38,7 @@ object DBModel: TDBModel
     Database = DBConnection
     Transaction = Transaction
     SQL.Strings = (
-      'SELECT * FROM public.content;'
+      'SELECT * FROM public.content'
     )
     Params = <>
     Macros = <>

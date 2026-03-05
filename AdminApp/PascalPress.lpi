@@ -106,6 +106,9 @@
     </RunParams>
     <RequiredPackages>
       <Item>
+        <PackageName Value="FCL"/>
+      </Item>
+      <Item>
         <PackageName Value="RunTimeTypeInfoControls"/>
       </Item>
       <Item>
@@ -142,6 +145,20 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DBLoginWindow"/>
+      </Unit>
+      <Unit>
+        <Filename Value="propertydialog.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="PropertyForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="PropertyDialog"/>
+      </Unit>
+      <Unit>
+        <Filename Value="texteditwindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="TextEditorForm"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="TextEditWindow"/>
       </Unit>
     </Units>
   </ProjectOptions>
