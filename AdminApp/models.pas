@@ -5,7 +5,7 @@ unit models;
 interface
 
 uses
-  Classes, SysUtils, PQConnection, SQLDB, Forms;
+  Classes, SysUtils, PQConnection, SQLDB, Forms, DB;
 
 type
 
@@ -24,6 +24,7 @@ type
     procedure CreateDirectory(title, location: string);
     procedure CreateBasicFS;
     procedure FilterDir(location: string);
+    procedure CommitChanges;
   end;
 
 var
@@ -47,7 +48,9 @@ begin
     { Transaction bug if user tries to auth a second time after a failure. }
     Transaction.EndTransaction;
     DBConnection.Connected:=False;
-  end;
+  end
+  else
+    BlogFS.FieldByName('id').ProviderFlags:=[pfInKey];
   Result:=BlogFS.Active;
 end;
 
@@ -92,6 +95,12 @@ begin
     Filter:='location='+QuotedStr(location);
     Filtered:=True;
   end;
+end;
+
+procedure TDBModel.CommitChanges;
+begin
+  BlogFS.ApplyUpdates;
+  Transaction.CommitRetaining;
 end;
 
 end.

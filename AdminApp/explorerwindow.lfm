@@ -46,6 +46,7 @@ object ExplorerForm: TExplorerForm
         StateImagesWidth = 16
         TabOrder = 0
         Options = [tvoAutoItemHeight, tvoHideSelection, tvoKeepCollapsedNodes, tvoReadOnly, tvoRightClickSelect, tvoShowButtons, tvoShowLines, tvoShowRoot, tvoToolTips, tvoThemedDraw]
+        OnSelectionChanged = VFSTreeSelectionChanged
       end
     end
     object IconPane: TPairSplitterSide
@@ -64,10 +65,14 @@ object ExplorerForm: TExplorerForm
         Width = 298
         Columns = <        
           item
+            AutoSize = True
             Caption = 'Title'
+            Width = 38
           end        
           item
+            AutoSize = True
             Caption = 'Content Type'
+            Width = 95
           end        
           item
             Caption = 'Added'
@@ -90,16 +95,23 @@ object ExplorerForm: TExplorerForm
         Caption = '&New...'
         object TextItem: TMenuItem
           Caption = '&Text Document'
+          OnClick = TextItemClick
         end
         object DirMenu: TMenuItem
           Caption = '&Folder'
+          OnClick = DirMenuClick
         end
         object HTMLItem: TMenuItem
           Caption = '&HTML Document'
+          OnClick = HTMLItemClick
         end
       end
       object OpenItem: TMenuItem
         Action = FileOpen
+      end
+      object SaveItem: TMenuItem
+        Caption = '&Save Database'
+        OnClick = SaveItemClick
       end
       object DeleteItem: TMenuItem
         Action = FileDelete
@@ -126,6 +138,7 @@ object ExplorerForm: TExplorerForm
     object FileDelete: TAction
       Category = 'File'
       Caption = '&Delete'
+      OnExecute = FileDeleteExecute
     end
     object FileProperties: TAction
       Category = 'File'
@@ -140,5 +153,20 @@ object ExplorerForm: TExplorerForm
   object Icons: TImageList
     Left = 680
     Top = 176
+    Bitmap = {
+      4C7A030000001000000010000000770100000000000078DAED93CB4EC2401486
+      FB322A1BDE0ED9B8F159BC071FC10D0D5B172694B03221022AF7163AD3CBB4FD
+      ED4C1924A4338025D1449A7CC9643ADFF9CF99640CE3305FF3E61C3AACDB2A9A
+      D715AD8F244112474822869885293EA2D0431450CCFB6DB41E2ED0BAAA287DEE
+      32F3321F6F01A76BC152D4E07E1CF1CC0071E88BCC282060BE2BDC903A08890D
+      BBF302EBAE8A5C3F7595F94B82C544DC479E2F67653E11998CCE97B93304EE54
+      B8FE7CA4F6B96BDD6BF19DA1D2DF9C357065EE58E472D7B33FD53EEFF9F5498B
+      37FB50FADFB972D67196E90C44AE377B079DF6D57E7A4F6CD8D642273DA5BF7E
+      C7D9AC03D12F5DE692491764FCA6F637EE49B853EEF656AE3BEA28FD7D38D0B3
+      350014A2DCA038335D9CD433F89AEFEDEA97D2F3A69DE07901015F971B64554F
+      47C9CCCE49775F649DA2FE91FFCB699D14728BBEBF4361D50CE8683E1A5BFD6D
+      B55B35E3C73E777535A4BFD9F7FA3F5D8D6D7EDEFEAEFDEF725697A59AE798FF
+      F7F27FB3FF7D90DE17A773FA7E
+    }
   end
 end

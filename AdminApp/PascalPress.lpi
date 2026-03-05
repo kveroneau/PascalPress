@@ -132,12 +132,14 @@
         <Filename Value="models.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DBModel"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="DataModule"/>
       </Unit>
       <Unit>
         <Filename Value="dbloginwindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="DBLoginForm"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="DBLoginWindow"/>
       </Unit>
