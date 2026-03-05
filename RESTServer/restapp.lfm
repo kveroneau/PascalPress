@@ -1,0 +1,155 @@
+object SQLDBRest: TSQLDBRest
+  OldCreateOrder = False
+  Dispatcher = RestDispatcher
+  Kind = wkOneShot
+  Height = 191
+  HorizontalOffset = 290
+  VerticalOffset = 145
+  Width = 279
+  object RestDispatcher: TSQLDBRestDispatcher
+    Active = False
+    Connections = <    
+      item
+        ConnectionType = 'PostgreSQL'
+        Name = 'PascalPress'
+        Password = 'password'
+        UserName = 'postgres'
+        HostName = 'srv02'
+        DatabaseName = 'pascalpress'
+        Port = 0
+      end>
+    Schemas = <    
+      item
+        Schema = RESTSchema
+      end>
+    BasePath = '/api'
+    DefaultConnection = 'PascalPress'
+    EnforceLimit = 0
+    CORSMaxAge = 86400
+    CORSAllowCredentials = True
+    Left = 168
+    Top = 72
+  end
+  object RESTSchema: TSQLDBRestSchema
+    Resources = <    
+      item
+        Fields = <        
+          item
+            FieldName = 'id'
+            PublicName = 'id'
+            FieldType = rftInteger
+            NativeFieldType = ftInteger
+            Options = [foInKey, foRequired, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'title'
+            PublicName = 'title'
+            FieldType = rftString
+            NativeFieldType = ftString
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 40
+          end        
+          item
+            FieldName = 'location'
+            PublicName = 'location'
+            FieldType = rftString
+            NativeFieldType = ftString
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 40
+          end        
+          item
+            FieldName = 'type'
+            PublicName = 'type'
+            FieldType = rftInteger
+            NativeFieldType = ftInteger
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'added'
+            PublicName = 'added'
+            FieldType = rftDateTime
+            NativeFieldType = ftDateTime
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'modified'
+            PublicName = 'modified'
+            FieldType = rftDateTime
+            NativeFieldType = ftDateTime
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'objectid'
+            PublicName = 'objectid'
+            FieldType = rftInteger
+            NativeFieldType = ftInteger
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'published'
+            PublicName = 'published'
+            FieldType = rftBoolean
+            NativeFieldType = ftBoolean
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'summary'
+            PublicName = 'summary'
+            FieldType = rftString
+            NativeFieldType = ftMemo
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'tag'
+            PublicName = 'tag'
+            FieldType = rftString
+            NativeFieldType = ftString
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 20
+          end>
+        TableName = 'blogfs'
+        ResourceName = 'blogfs'
+        AllowedOperations = [roGet, roOptions, roHead]
+      end    
+      item
+        Fields = <        
+          item
+            FieldName = 'id'
+            PublicName = 'id'
+            FieldType = rftInteger
+            NativeFieldType = ftInteger
+            Options = [foInKey, foRequired, foOrderBy]
+            MaxLen = 0
+          end        
+          item
+            FieldName = 'title'
+            PublicName = 'title'
+            FieldType = rftString
+            NativeFieldType = ftString
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 80
+          end        
+          item
+            FieldName = 'content'
+            PublicName = 'content'
+            FieldType = rftString
+            NativeFieldType = ftMemo
+            Options = [foRequired, foFilter, foOrderBy]
+            MaxLen = 0
+          end>
+        TableName = 'content'
+        ResourceName = 'content'
+        AllowedOperations = [roGet, roOptions, roHead]
+      end>
+    ConnectionName = 'PascalPress'
+    Left = 40
+    Top = 72
+  end
+end

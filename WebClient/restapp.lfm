@@ -1,0 +1,34 @@
+object RESTFragment: TRESTFragment
+  OnCreate = DataModuleCreate
+  OldCreateOrder = False
+  UseProjectHTMLFile = False
+  HTMLFileName = 'restapp.html'
+  OnRendered = DataModuleRendered
+  Height = 190
+  HorizontalOffset = 290
+  VerticalOffset = 145
+  Width = 246
+  object RESTConnection: TSQLDBRestConnection
+    BaseURL = '/REST/api/'
+    Left = 40
+    Top = 16
+  end
+  object BlogFS: TSQLDBRestDataset
+    FieldDefs = <>
+    AfterOpen = BlogFSAfterOpen
+    Connection = RESTConnection
+    ResourceName = 'blogfs'
+    Params = <>
+    AutoApplyUpdates = False
+    Left = 160
+    Top = 16
+  end
+  object ActionList: THTMLElementActionList
+    Left = 86
+    Top = 98
+    object actDBTitle: THTMLElementAction
+      Events = []
+      ElementID = 'DBTitle'
+    end
+  end
+end

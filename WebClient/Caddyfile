@@ -1,0 +1,15 @@
+:8000 {
+  encode
+
+  handle /REST/* {
+    reverse_proxy localhost:3000 {
+      transport fastcgi
+    }
+  }
+
+  handle {
+    file_server
+    header /index.html Cache-Control "public, max-age=0, must-revalidate"
+  }
+
+}
