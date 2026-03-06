@@ -3,26 +3,41 @@ program PascalPress;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, restapp;
+  BrowserApp, JS, Classes, SysUtils, Web, restapp, webrouter, textfrag, fragman;
 
 type
-  TMyApplication = class(TBrowserApplication)
+
+  { TPascalPressApp }
+
+  TPascalPressApp = class(TBrowserApplication)
+  private
+    procedure DBReady(Sender: TObject);
   protected
     procedure DoRun; override;
   public
   end;
 
-procedure TMyApplication.DoRun;
+{ TPascalPressApp }
+
+procedure TPascalPressApp.DBReady(Sender: TObject);
 begin
+  if Router.RouteFromURL = '' then
+    Router.Push('/Home');
+end;
+
+procedure TPascalPressApp.DoRun;
+begin
+  Router.InitHistory(hkHash);
   RESTFragment:=TRESTFragment.Create(Self);
-  RESTFragment.Show;
+  RESTFragment.OnDBReady:=@DBReady;
+  TextFragment:=TTextFragment.Create(Self);
 end;
 
 var
-  Application : TMyApplication;
+  Application : TPascalPressApp;
 
 begin
-  Application:=TMyApplication.Create(nil);
+  Application:=TPascalPressApp.Create(Nil);
   Application.Initialize;
   Application.Run;
 end.
