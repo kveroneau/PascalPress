@@ -6,15 +6,17 @@ interface
 
 uses
   SysUtils, Classes, Rtl.HTMLActions, htmlfragment, restapp, webrouter,
-  jsondataset, sqldbrestdataset, fragman, DB;
+  jsondataset, sqldbrestdataset, fragman, DB, strutils;
 
 type
 
   { TTextFragment }
 
   TTextFragment = class(THTMLFragment)
+    actadded: THTMLElementAction;
     actdocument: THTMLElementAction;
     ActionList: THTMLElementActionList;
+    actsummary: THTMLElementAction;
     acttitle: THTMLElementAction;
     ContentDB: TSQLDBRestDataset;
     procedure ContentDBAfterOpen(DataSet: TDataSet);
@@ -22,6 +24,7 @@ type
     procedure DataModuleRendered(Sender: TObject);
     procedure DataModuleUnrendered(Sender: TObject);
   private
+    procedure RenderContent;
     Procedure TextRoute(URL: String; aRoute: TRoute; Params: TStrings);
   public
 
@@ -41,9 +44,13 @@ begin
   with RESTFragment.BlogFS do
   begin
     acttitle.Value:=FieldByName('title').AsString;
-    actdocument.Value:=FieldByName('summary').AsString;
+    actadded.Value:=FieldByName('added').AsString;
+    actsummary.Value:=FieldByName('summary').AsString;
   end;
-  ContentDB.Load;
+  if not ContentDB.Active then
+    ContentDB.Load
+  else
+    RenderContent;
 end;
 
 procedure TTextFragment.DataModuleUnrendered(Sender: TObject);
@@ -51,10 +58,34 @@ begin
   WriteLn('I am gone!');
 end;
 
+procedure TTextFragment.RenderContent;
+begin
+  if not ContentDB.Locate('id', RESTFragment.BlogFS.FieldByName('objectid').AsInteger, []) then
+    Exit;
+  acttitle.Value:=ContentDB.FieldByName('title').AsString;
+  case RESTFragment.BlogFS.FieldByName('type').AsInteger of
+    0: actdocument.Element.innerHTML:='<pre>'+ContentDB.FieldByName('content').AsString+'</pre>';
+    2: actdocument.Element.innerHTML:=ContentDB.FieldByName('content').AsString;
+  else
+    actdocument.Value:='Cannot Render Content.';
+  end;
+end;
+
 procedure TTextFragment.TextRoute(URL: String; aRoute: TRoute; Params: TStrings
   );
+var
+  path, location: string;
 begin
-  RESTFragment.BlogFS.Locate('title', 'Home', []);
+  path:=Params.Values['VFSPath'];
+  location:=Copy2SymbDel(path,':');
+  with RESTFragment.BlogFS do
+  begin
+    Filtered:=False;
+    Filter:='location='+QuotedStr(location);
+    Filtered:=True;
+  end;
+  if not RESTFragment.BlogFS.Locate('title', path, []) then
+    Exit;
   HideCurFragment;
   Show;
   CurrentFragment:=Self;
@@ -62,18 +93,13 @@ end;
 
 procedure TTextFragment.DataModuleCreate(Sender: TObject);
 begin
-  Router.RegisterRoute('/Home', @TextRoute);
+  Router.RegisterRoute('/Post/:VFSPath', @TextRoute);
 end;
 
 procedure TTextFragment.ContentDBAfterOpen(DataSet: TDataSet);
 begin
   ContentDB.Active:=True;
-  ContentDB.Filter:='id='+IntToStr(RESTFragment.BlogFS.FieldByName('objectid').AsInteger);
-  ContentDB.Filtered:=True;
-  if ContentDB.IsEmpty then
-    Exit;
-  acttitle.Value:=ContentDB.FieldByName('title').AsString;
-  actdocument.Value:=ContentDB.FieldByName('content').AsString;
+  RenderContent;
 end;
 
 end.

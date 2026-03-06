@@ -7,7 +7,7 @@ object TextFragment: TTextFragment
   OnUnrendered = DataModuleUnrendered
   Height = 216
   HorizontalOffset = 290
-  VerticalOffset = 145
+  VerticalOffset = 364
   Width = 273
   object ActionList: THTMLElementActionList
     Left = 64
@@ -20,12 +20,23 @@ object TextFragment: TTextFragment
       Events = []
       ElementID = 'document'
     end
+    object actadded: THTMLElementAction
+      Events = []
+      ElementID = 'added'
+    end
+    object actsummary: THTMLElementAction
+      Events = []
+      ElementID = 'summary'
+    end
   end
   object ContentDB: TSQLDBRestDataset
     FieldDefs = <>
     AfterOpen = ContentDBAfterOpen
     Connection = RESTFragment.RESTConnection
     ResourceName = 'content'
+    SQL.Strings = (
+      ''
+    )
     Params = <>
     AutoApplyUpdates = False
     Left = 176
