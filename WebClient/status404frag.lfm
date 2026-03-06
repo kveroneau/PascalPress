@@ -1,0 +1,9 @@
+object Status404: TStatus404
+  OldCreateOrder = False
+  UseProjectHTMLFile = False
+  HTMLFileName = 'status404.html'
+  Height = 145
+  HorizontalOffset = 296
+  VerticalOffset = 145
+  Width = 253
+end

@@ -77,6 +77,16 @@
         <Filename Value="fragman.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit>
+      <Unit>
+        <Filename Value="status404.html"/>
+        <IsPartOfProject Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="status404frag.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="Status404"/>
+        <ResourceBaseClass Value="DataModule"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

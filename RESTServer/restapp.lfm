@@ -27,6 +27,7 @@ object SQLDBRest: TSQLDBRest
     EnforceLimit = 0
     CORSMaxAge = 86400
     CORSAllowCredentials = True
+    OnLog = RestDispatcherLog
     Left = 168
     Top = 72
   end
@@ -117,6 +118,7 @@ object SQLDBRest: TSQLDBRest
         TableName = 'blogfs'
         ResourceName = 'blogfs'
         AllowedOperations = [roGet, roOptions, roHead]
+        OnAllowRecord = RESTSchemaResources0AllowRecord
       end    
       item
         Fields = <        

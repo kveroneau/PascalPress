@@ -6,7 +6,7 @@ interface
 
 uses
   SysUtils, Classes, Rtl.HTMLActions, htmlfragment, restapp, webrouter,
-  jsondataset, sqldbrestdataset, fragman, DB, strutils;
+  jsondataset, sqldbrestdataset, fragman, DB, strutils, status404frag;
 
 type
 
@@ -24,6 +24,7 @@ type
     procedure DataModuleRendered(Sender: TObject);
     procedure DataModuleUnrendered(Sender: TObject);
   private
+    procedure RenderFolder;
     procedure RenderContent;
     Procedure TextRoute(URL: String; aRoute: TRoute; Params: TStrings);
   public
@@ -58,15 +59,47 @@ begin
   WriteLn('I am gone!');
 end;
 
-procedure TTextFragment.RenderContent;
+procedure TTextFragment.RenderFolder;
+var
+  html, title, location: string;
 begin
+  location:=RESTFragment.BlogFS.FieldByName('title').AsString;
+  html:='';
+  RESTFragment.FilterDir(location);
+  with RESTFragment.BlogFS do
+  begin
+    if IsEmpty then
+      Exit;
+    First;
+    repeat
+      if FieldByName('published').AsBoolean then
+      begin
+        title:=FieldByName('title').AsString;
+        html:=html+'<a href="#/Post/'+location+':'+title+'">'+title+'</a><br/>';
+      end;
+      Next;
+    until EOF;
+  end;
+  actdocument.Element.innerHTML:=html;
+end;
+
+procedure TTextFragment.RenderContent;
+var
+  typ: Integer;
+begin
+  typ:=RESTFragment.BlogFS.FieldByName('type').AsInteger;
+  if typ = 1 then
+  begin
+    RenderFolder;
+    Exit;
+  end;
   if not ContentDB.Locate('id', RESTFragment.BlogFS.FieldByName('objectid').AsInteger, []) then
   begin
     actdocument.Value:='No Content to Render.';
     Exit;
   end;
   acttitle.Value:=ContentDB.FieldByName('title').AsString;
-  case RESTFragment.BlogFS.FieldByName('type').AsInteger of
+  case typ of
     0: actdocument.Element.innerHTML:='<pre>'+ContentDB.FieldByName('content').AsString+'</pre>';
     2: actdocument.Element.innerHTML:=ContentDB.FieldByName('content').AsString;
   else
@@ -84,8 +117,7 @@ begin
   RESTFragment.FilterDir(location);
   if not RESTFragment.BlogFS.Locate('title', path, []) then
   begin
-    { Thinking of creating and showing a 404 HTMLFragment here. }
-    HideCurFragment;
+    Show404;
     Exit;
   end;
   HideCurFragment;

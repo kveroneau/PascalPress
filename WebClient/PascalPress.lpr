@@ -3,7 +3,8 @@ program PascalPress;
 {$mode objfpc}
 
 uses
-  BrowserApp, JS, Classes, SysUtils, Web, restapp, webrouter, textfrag, fragman;
+  BrowserApp, JS, Classes, SysUtils, Web, restapp, webrouter, textfrag, fragman,
+  status404frag;
 
 type
 
@@ -28,6 +29,7 @@ end;
 procedure TPascalPressApp.DoRun;
 begin
   Router.InitHistory(hkHash);
+  Status404:=TStatus404.Create(Self);
   RESTFragment:=TRESTFragment.Create(Self);
   RESTFragment.OnDBReady:=@DBReady;
   TextFragment:=TTextFragment.Create(Self);
