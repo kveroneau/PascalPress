@@ -20,6 +20,7 @@ begin
   begin
     WriteLn('Hiding current fragment: ',CurrentFragment.Name);
     CurrentFragment.Hide;
+    CurrentFragment:=Nil;
   end;
 end;
 

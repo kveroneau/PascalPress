@@ -61,7 +61,10 @@ end;
 procedure TTextFragment.RenderContent;
 begin
   if not ContentDB.Locate('id', RESTFragment.BlogFS.FieldByName('objectid').AsInteger, []) then
+  begin
+    actdocument.Value:='No Content to Render.';
     Exit;
+  end;
   acttitle.Value:=ContentDB.FieldByName('title').AsString;
   case RESTFragment.BlogFS.FieldByName('type').AsInteger of
     0: actdocument.Element.innerHTML:='<pre>'+ContentDB.FieldByName('content').AsString+'</pre>';
@@ -78,14 +81,13 @@ var
 begin
   path:=Params.Values['VFSPath'];
   location:=Copy2SymbDel(path,':');
-  with RESTFragment.BlogFS do
-  begin
-    Filtered:=False;
-    Filter:='location='+QuotedStr(location);
-    Filtered:=True;
-  end;
+  RESTFragment.FilterDir(location);
   if not RESTFragment.BlogFS.Locate('title', path, []) then
+  begin
+    { Thinking of creating and showing a 404 HTMLFragment here. }
+    HideCurFragment;
     Exit;
+  end;
   HideCurFragment;
   Show;
   CurrentFragment:=Self;
@@ -93,6 +95,8 @@ end;
 
 procedure TTextFragment.DataModuleCreate(Sender: TObject);
 begin
+  { Wondering if I should make the path here a constant so it can be easily
+    changed to something other than /Post/ }
   Router.RegisterRoute('/Post/:VFSPath', @TextRoute);
 end;
 

@@ -25,6 +25,7 @@ type
     Procedure RESTRoute(URL: String; aRoute: TRoute; Params: TStrings);
   public
     property OnDBReady: TNotifyEvent read FDBReady write FDBReady;
+    procedure FilterDir(location: string);
   end;
 
 var
@@ -62,6 +63,13 @@ begin
   HideCurFragment;
   Show;
   CurrentFragment:=Self;
+end;
+
+procedure TRESTFragment.FilterDir(location: string);
+begin
+  BlogFS.Filtered:=False;
+  BlogFS.Filter:='location='+QuotedStr(location);
+  BlogFS.Filtered:=True;
 end;
 
 end.

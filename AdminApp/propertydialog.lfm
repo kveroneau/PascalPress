@@ -59,7 +59,7 @@ object PropertyForm: TPropertyForm
     Height = 23
     Top = 168
     Width = 90
-    Caption = 'Pub'
+    Caption = 'Published'
     DataField = 'published'
     DataSource = DataSource
     TabOrder = 0

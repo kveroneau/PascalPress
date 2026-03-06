@@ -22,7 +22,7 @@ type
 procedure TPascalPressApp.DBReady(Sender: TObject);
 begin
   if Router.RouteFromURL = '' then
-    Router.Push('/Home');
+    Router.Push('/Post/SiteRoot:Home');
 end;
 
 procedure TPascalPressApp.DoRun;

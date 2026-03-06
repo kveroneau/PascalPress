@@ -297,6 +297,8 @@ begin
       ServerFiltered:=Enabled;
     end;
     Active:=True;
+    { This should be auto-detected... }
+    FieldByName('id').ProviderFlags:=[pfInKey];
     if VarIsNull(objid) then
       Append
     else
